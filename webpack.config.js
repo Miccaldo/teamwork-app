@@ -5,12 +5,12 @@ module.exports = {
     entry: "./src/index.tsx",
     output: {
         filename: "main.js",
-        path: path.resolve(__dirname, "build"),
+        path: path.resolve(__dirname, "build")
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, "public", "index.html"),
-        }),
+            template: path.join(__dirname, "public", "index.html")
+        })
     ],
     module: {
         // exclude node_modules
@@ -18,39 +18,36 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
-                use: ["babel-loader"],
+                use: ["babel-loader"]
             },
             {
                 test: /\.css$/,
-                use : [
+                use: [
+                    { loader: "style-loader" },
                     {
-                        loader: 'style-loader',
+                        loader: "css-loader",
+                        options: { sourceMap: true }
                     },
                     {
-                        loader: 'css-loader',
-                        options: {
-                            sourceMap: true,
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
+                        loader: "postcss-loader",
                         options: {
                             postcssOptions: {
-                                config: path.resolve(__dirname, 'src/tailwind/postcss.config.js')
+                                config: path.resolve(
+                                    __dirname,
+                                    "src/tailwind/postcss.config.js"
+                                )
                             }
-                        },
+                        }
                     }
                 ]
             }
-        ],
+        ]
     },
     devServer: {
-        static: {
-            directory: path.join(__dirname, "build"),
-        },
-        port: 3000,
+        static: { directory: path.join(__dirname, "build") },
+        port: 3000
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
-    },
+        extensions: [".tsx", ".ts", ".js"]
+    }
 };
