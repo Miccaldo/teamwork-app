@@ -1,7 +1,16 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const ReactRefreshTypeScript = require("react-refresh-typescript");
+const webpack = require("webpack");
+const dotenv = require("dotenv");
+
+dotenv.config();
+
+const isDevelopment = process.env.REACT_APP_NODE_ENV !== "production";
 
 module.exports = {
+    mode: isDevelopment ? "development" : "production",
     entry: "./src/index.tsx",
     output: {
         filename: "main.js",
@@ -10,15 +19,25 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: path.join(__dirname, "public", "index.html")
+        }),
+        isDevelopment && new ReactRefreshWebpackPlugin(),
+        new webpack.DefinePlugin({
+            "process.env": JSON.stringify(process.env)
         })
     ],
     module: {
-        // exclude node_modules
         rules: [
             {
-                test: /\.tsx?$/,
+                test: /\.[jt]sx?$/,
                 exclude: /node_modules/,
-                use: ["babel-loader"]
+                use: [{
+                        loader: "ts-loader",
+                        options: {
+                            getCustomTransformers: () => ({
+                                before: [isDevelopment && ReactRefreshTypeScript()].filter(Boolean)
+                            })
+                        }
+                    }]
             },
             {
                 test: /\.css$/,
@@ -45,6 +64,7 @@ module.exports = {
     },
     devServer: {
         static: { directory: path.join(__dirname, "build") },
+        hot: true,
         port: 3000
     },
     resolve: {
