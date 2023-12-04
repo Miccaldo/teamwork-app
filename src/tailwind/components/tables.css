@@ -1,0 +1,7 @@
+thead {
+    @apply uppercase;
+}
+
+td, th {
+    @apply py-2 px-3;
+}
