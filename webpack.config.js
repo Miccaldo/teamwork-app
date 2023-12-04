@@ -14,7 +14,8 @@ module.exports = {
     entry: "./src/index.tsx",
     output: {
         filename: "main.js",
-        path: path.resolve(__dirname, "build")
+        path: path.resolve(__dirname, "build"),
+        publicPath: '/'
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -59,13 +60,22 @@ module.exports = {
                         }
                     }
                 ]
-            }
+            },
+            {
+                test: /\.(woff|woff2)$/,
+                type: 'asset/resource',
+            },
+            {
+                test: /\.svg/,
+                type: 'asset/inline',
+            },
         ]
     },
     devServer: {
         static: { directory: path.join(__dirname, "build") },
         hot: true,
-        port: 3000
+        port: 3000,
+        historyApiFallback: true,
     },
     resolve: {
         extensions: [".tsx", ".ts", ".js"]

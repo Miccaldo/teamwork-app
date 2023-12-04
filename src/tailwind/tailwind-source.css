@@ -1,4 +1,6 @@
 @import url(components/typography.css);
+@import url(components/tables.css);
+@import url(components/users.css);
 
 @tailwind base;
 @tailwind components;

@@ -1,0 +1,7 @@
+.header {
+    @apply text-2xl;
+}
+
+.header::after {
+    @apply content-[''] block border-b border-b-slate-600 border-b-4 pt-2 mb-4 w-1/4;
+}
